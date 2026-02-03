@@ -1,0 +1,144 @@
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+
+const DiagnosticForm = () => {
+  const [formData, setFormData] = useState({
+    empresa: "",
+    whatsapp: "",
+    faturamento: "",
+    erp: "",
+    prazo: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.empresa || !formData.whatsapp || !formData.faturamento || !formData.erp || !formData.prazo) {
+      toast({
+        title: "Preencha todos os campos",
+        description: "Todos os campos são obrigatórios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Solicitação enviada!",
+      description: "Em breve entraremos em contato.",
+    });
+    
+    setFormData({ empresa: "", whatsapp: "", faturamento: "", erp: "", prazo: "" });
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-2xl p-6 md:p-8" id="contato">
+      <h3 className="text-xl font-bold text-foreground mb-6 text-center">
+        Agendar Diagnóstico
+      </h3>
+      
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="empresa" className="text-foreground text-sm font-medium">
+            Nome da Empresa
+          </Label>
+          <Input
+            id="empresa"
+            type="text"
+            placeholder="Digite o nome da sua empresa"
+            value={formData.empresa}
+            onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
+            className="h-11"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="whatsapp" className="text-foreground text-sm font-medium">
+            WhatsApp (com DDD)
+          </Label>
+          <Input
+            id="whatsapp"
+            type="tel"
+            placeholder="(00) 00000-0000"
+            value={formData.whatsapp}
+            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+            className="h-11"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="faturamento" className="text-foreground text-sm font-medium">
+            Faturamento Médio Mensal
+          </Label>
+          <Select
+            value={formData.faturamento}
+            onValueChange={(value) => setFormData({ ...formData, faturamento: value })}
+          >
+            <SelectTrigger className="h-11">
+              <SelectValue placeholder="Selecione o faturamento" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="50k-100k">R$ 50k a 100k</SelectItem>
+              <SelectItem value="100k-500k">R$ 100k a 500k</SelectItem>
+              <SelectItem value="acima-500k">Acima de 500k</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="erp" className="text-foreground text-sm font-medium">
+            ERP Utilizado
+          </Label>
+          <Select
+            value={formData.erp}
+            onValueChange={(value) => setFormData({ ...formData, erp: value })}
+          >
+            <SelectTrigger className="h-11">
+              <SelectValue placeholder="Selecione o ERP" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="omie">Omie</SelectItem>
+              <SelectItem value="bling">Bling</SelectItem>
+              <SelectItem value="conta-azul">Conta Azul</SelectItem>
+              <SelectItem value="outro">Outro</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="prazo" className="text-foreground text-sm font-medium">
+            Prazo de Implementação
+          </Label>
+          <Select
+            value={formData.prazo}
+            onValueChange={(value) => setFormData({ ...formData, prazo: value })}
+          >
+            <SelectTrigger className="h-11">
+              <SelectValue placeholder="Selecione o prazo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="30-dias">Em até 30 dias</SelectItem>
+              <SelectItem value="bimestre">Neste Bimestre</SelectItem>
+              <SelectItem value="semestre">Neste Semestre</SelectItem>
+              <SelectItem value="ano">Neste Ano</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <button type="submit" className="btn-primary w-full text-base py-3.5 mt-2">
+          QUERO PREVISIBILIDADE
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default DiagnosticForm;

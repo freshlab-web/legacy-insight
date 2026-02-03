@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* BPO Legacy Design System */
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 100%;
+    --foreground: 220 10% 36%; /* #525765 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 36%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 36%;
+
+    /* Primary: #009689 - Teal/Green */
+    --primary: 174 100% 29%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary surfaces - light gray from #525765 */
+    --secondary: 220 10% 97%;
+    --secondary-foreground: 220 10% 36%;
+
+    --muted: 220 10% 96%;
+    --muted-foreground: 220 10% 50%;
+
+    /* Accent - same as primary */
+    --accent: 174 100% 29%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 90%;
+    --input: 220 10% 90%;
+    --ring: 174 100% 29%;
+
+    --radius: 0.5rem;
+
+    /* Dark section - using #525765 */
+    --dark-section: 220 10% 36%;
+    --dark-section-foreground: 0 0% 100%;
+
+    /* Light alternating sections - light teal tint */
+    --section-alt: 174 30% 97%;
+    
+    /* Light gray section */
+    --section-gray: 220 10% 97%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg 
+           hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .card-shadow {
+    @apply bg-card rounded-xl shadow-lg border border-border/50;
+  }
+
+  .tag-badge {
+    @apply inline-flex items-center px-3 py-1.5 rounded text-xs font-medium;
+  }
+
+  .tag-badge-primary {
+    @apply tag-badge bg-primary text-primary-foreground;
+  }
+
+  .tag-badge-secondary {
+    @apply tag-badge bg-foreground text-white;
+  }
+
+  .feature-icon {
+    @apply w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-foreground;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-muted-foreground max-w-2xl;
+  }
+}
+
+/* Section fill colors for dividers */
+.fill-section-alt {
+  fill: hsl(var(--section-alt));
+}
+
+.fill-section-gray {
+  fill: hsl(var(--section-gray));
+}
+
+.fill-dark-section {
+  fill: hsl(var(--dark-section));
+}

@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import DiagnosticForm from "./DiagnosticForm";
-import heroBg from "@/assets/hero-bg.jpg";
+const heroBg = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/hero-bg.jpg";
+
 const HeroSection = () => {
   const checklist = ["Conciliação D-1 Diária", "Blindagem de DIFAL", "Transição Sem Traumas"];
   return <section id="inicio" className="relative min-h-[600px] md:min-h-[700px] overflow-hidden">

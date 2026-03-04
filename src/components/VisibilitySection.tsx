@@ -2,10 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Wallet, TrendingUp, X } from "lucide-react";
 
-import dashboard1 from "@/assets/dashboard-1.png";
-import dashboard2 from "@/assets/dashboard-2.png";
-import dashboard3 from "@/assets/dashboard-3.png";
-import dashboard4 from "@/assets/dashboard-4.png";
+const dashboard1 = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/dashboard-1.png";
+const dashboard2 = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/dashboard-2.png";
+const dashboard3 = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/dashboard-3.png";
+const dashboard4 = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/dashboard-4.png";
 
 const benefits = [
   { 

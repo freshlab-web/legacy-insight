@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+const MotionLink = motion(Link);
 
 const AlertBanner = () => {
   return (
@@ -47,19 +50,21 @@ const AlertBanner = () => {
               O "Ralo Financeiro" que destrói sua margem.
             </h2>
             
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               Vendas sólidas e ainda assim no relatório não é o mesmo que lucro. 
               Você sabe exatamente quanto opera em cada canal? Tem como saber o custo de margem 
               financeira considerando o DIFAL, impostos e taxas. Não saber torna esta perda potencial.
             </p>
+            <br></br>
 
-            <motion.button 
-              className="btn-primary"
+            <MotionLink
+             to="/contato"
+              className="btn-primary mt-4"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               ANALISAR MINHA SITUAÇÃO FINANCEIRA
-            </motion.button>
+            </MotionLink>
           </motion.div>
         </div>
       </div>

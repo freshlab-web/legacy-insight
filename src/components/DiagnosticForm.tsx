@@ -22,17 +22,27 @@ const DiagnosticForm = () => {
   });
 
    const labels: Record<string, string> = {
-    empresa: "",
-    whatsapp: "",
-    faturamento: "",
-    erp: "",
-    prazo: "",
+    empresa: "Nome da Empresa",
+    whatsapp: "WhatsApp",
+    faturamento: "Faturamento Médio Mensal",
+    erp: "ERP Utilizado",
+    prazo: "Prazo de Implementação",
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const raw = Object.entries(formData).map(([key, value]) => `<br/><br/> <b>${labels[key] || key}</b>: ${value}`).join('<br/>')
+    // Validação básica para garantir que todos os campos estão preenchidos
+    if (!formData.empresa || !formData.whatsapp || !formData.faturamento || !formData.erp || !formData.prazo) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Por favor, preencha todos os campos do formulário.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const raw = Object.entries(formData).map(([key, value]) => `<br/><br/> <b>${labels[key] || key}</b>: ${value}`).join('<br/>')
         const mensagem = raw.replace(/^.*Mensagem:\s*/s, '').trim();
 
         try {
@@ -71,7 +81,7 @@ const DiagnosticForm = () => {
          <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="empresa" className="text-foreground text-sm font-medium">
-            Nome da Empresa
+            Nome da Empresa *
           </Label>
           <Input
             id="empresa"
@@ -80,12 +90,13 @@ const DiagnosticForm = () => {
             value={formData.empresa}
             onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
             className="h-11"
+            required
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="whatsapp" className="text-foreground text-sm font-medium">
-            WhatsApp (com DDD)
+            WhatsApp (com DDD) *
           </Label>
           <Input
             id="whatsapp"
@@ -94,12 +105,13 @@ const DiagnosticForm = () => {
             value={formData.whatsapp}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
             className="h-11"
+            required
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="faturamento" className="text-foreground text-sm font-medium">
-            Faturamento Médio Mensal
+            Faturamento Médio Mensal *
           </Label>
           <Select
             value={formData.faturamento}
@@ -118,7 +130,7 @@ const DiagnosticForm = () => {
 
         <div className="space-y-2">
           <Label htmlFor="erp" className="text-foreground text-sm font-medium">
-            ERP Utilizado
+            ERP Utilizado *
           </Label>
           <Select
             value={formData.erp}
@@ -138,7 +150,7 @@ const DiagnosticForm = () => {
 
         <div className="space-y-2">
           <Label htmlFor="prazo" className="text-foreground text-sm font-medium">
-            Prazo de Implementação
+            Prazo de Implementação *
           </Label>
           <Select
             value={formData.prazo}

@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo-bpo-legacy.png";
+import { Link } from "react-router-dom";
+const logo = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/logo-bpo-legacy.png";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return <header className="sticky top-0 z-50 bg-white border-b border-border">
       <div className="section-container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#inicio" className="flex-shrink-0">
+          <Link 
+            to="/inicio" 
+            className="flex-shrink-0"
+          >
             <img src={logo} alt="BPO Legacy" className="h-10 md:h-12 w-auto" />
-          </a>
+          </Link>
 
           {/* Right side text */}
           <span className="hidden md:block text-foreground text-sm">Parte do Group Legacy | Curitiba/PR</span>

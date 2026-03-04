@@ -1,4 +1,4 @@
-import logo from "@/assets/logo-bpo-legacy.png";
+const logo = "https://cdn.jsdelivr.net/gh/freshlab-web/legacy-insight@main/src/assets/logo-bpo-legacy.png";
 
 const Footer = () => {
   return (

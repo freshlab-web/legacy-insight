@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+const MotionLink = motion(Link);
 
 const CTASection = () => {
   return (
@@ -26,8 +29,8 @@ const CTASection = () => {
             Volte a ser o estrategista que o seu negócio precisa.
           </motion.p>
 
-          <motion.a 
-            href="#contato" 
+          <MotionLink 
+            to="/contato" 
             className="btn-primary inline-block text-lg px-10 py-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +40,7 @@ const CTASection = () => {
             whileTap={{ scale: 0.98 }}
           >
             QUERO UMA GESTÃO DE ELITE AGORA
-          </motion.a>
+          </MotionLink>
         </div>
       </div>
     </section>

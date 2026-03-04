@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import AlertBanner from "@/components/AlertBanner";
@@ -12,6 +14,19 @@ import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const Index = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Scroll to the element matching the path (e.g., /contato -> #contato)
+    if (pathname !== "/") {
+      const elementId = pathname.substring(1); // Remove leading slash
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [pathname]);
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Header />

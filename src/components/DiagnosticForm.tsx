@@ -9,31 +9,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 
 const DiagnosticForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     empresa: "",
+    email: "",
     whatsapp: "",
     faturamento: "",
     erp: "",
     prazo: "",
   });
 
-   const labels: Record<string, string> = {
+  const labels: Record<string, string> = {
     empresa: "Nome da Empresa",
+    email: "E-mail",
     whatsapp: "WhatsApp",
     faturamento: "Faturamento Médio Mensal",
     erp: "ERP Utilizado",
     prazo: "Prazo de Implementação",
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isSubmitting) return;
+
     // Validação básica para garantir que todos os campos estão preenchidos
-    if (!formData.empresa || !formData.whatsapp || !formData.faturamento || !formData.erp || !formData.prazo) {
+    if (
+      !formData.empresa ||
+      !formData.email ||
+      !formData.whatsapp ||
+      !formData.faturamento ||
+      !formData.erp ||
+      !formData.prazo
+    ) {
       toast({
         title: "Campos obrigatórios",
         description: "Por favor, preencha todos os campos do formulário.",
@@ -42,33 +54,74 @@ const DiagnosticForm = () => {
       return;
     }
 
-    const raw = Object.entries(formData).map(([key, value]) => `<br/><br/> <b>${labels[key] || key}</b>: ${value}`).join('<br/>')
-        const mensagem = raw.replace(/^.*Mensagem:\s*/s, '').trim();
+    setIsSubmitting(true);
 
-        try {
-          const payload = {
-            destinatario: "marcio@bpolegacy.com.br",
-            assunto: "Diagnóstico - BPO Legacy",
-            mensagem,
-          };
+    const raw = Object.entries(formData)
+      .map(([key, value]) => `<br/><br/> <b>${labels[key] || key}</b>: ${value}`)
+      .join("<br/>");
+    const mensagem = raw.replace(/^.*Mensagem:\s*/s, "").trim();
 
-          const response = await fetch('https://webdesign.freshlab.com.br/lp-mail/lp-mail.php', {
-              method: 'POST', headers: { 'Content-Type': 'application/json', },
-              body: JSON.stringify(payload),
-            }
-          );
-
-          if (response.ok) {
-            const text = await response.text();
-            console.log("Success:", text);
-            setIsSubmitted(true);
-          } else {
-            console.error("Error:", response.status);
-          }
-        } catch (error) {
-          console.error("Network error:", error);
-        }
+    try {
+      const payload = {
+        destinatario: "almir@freshlab.com.br",
+        assunto: "Diagnóstico - BPO Legacy",
+        mensagem,
       };
+
+      const postData = new FormData();
+      for (const [key, value] of Object.entries({ ...formData, ...payload })) {
+        postData.append(key, value);
+      }
+      postData.append("nome", formData.empresa);
+      postData.append("telefone", formData.whatsapp);
+      postData.append("email", formData.email);
+
+      const lpMailResponse = await fetch("https://webdesign.freshlab.com.br/lp-mail/lp-mail.php", {
+        method: "POST",
+        body: postData,
+      });
+
+      if (!lpMailResponse.ok) {
+        console.error("Error lp-mail:", lpMailResponse.status);
+        toast({
+          title: "Não foi possível enviar",
+          description: "Tivemos um problema ao enviar o formulário. Tente novamente em instantes.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const rdFormData = new FormData();
+      for (const [key, value] of postData.entries()) {
+        rdFormData.append(key, String(value));
+      }
+
+      const rdResponse = await fetch("https://novainterface.com.br/lps/bpo/enviar_rd.php", {
+        method: "POST",
+        body: rdFormData,
+      });
+
+      if (rdResponse.ok) {
+        setIsSubmitted(true);
+      } else {
+        console.error("Error enviar_rd:", rdResponse.status);
+        toast({
+          title: "Não foi possível finalizar o envio",
+          description: "Recebemos seus dados, mas não conseguimos concluir o processamento. Tente novamente.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      toast({
+        title: "Erro de conexão",
+        description: "Verifique sua internet e tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
 
   return (
@@ -89,6 +142,21 @@ const DiagnosticForm = () => {
             placeholder="Digite o nome da sua empresa"
             value={formData.empresa}
             onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
+            className="h-11"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-foreground text-sm font-medium">
+            E-mail *
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="nome@empresa.com"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className="h-11"
             required
           />
@@ -168,9 +236,20 @@ const DiagnosticForm = () => {
           </Select>
         </div>
 
-        <button type="submit" className="btn-primary w-full text-base py-3.5 mt-2">
-          QUERO PREVISIBILIDADE
+        <button
+          type="submit"
+          className="btn-primary w-full text-base py-3.5 mt-2 inline-flex items-center justify-center gap-2 disabled:opacity-70"
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+          {isSubmitting ? "ENVIANDO..." : "QUERO PREVISIBILIDADE"}
         </button>
+        {isSubmitting && (
+          <p className="text-xs text-muted-foreground text-center">
+            Enviando suas informações…
+          </p>
+        )}
       </form>
       ) : (
         <div className="text-center py-8">

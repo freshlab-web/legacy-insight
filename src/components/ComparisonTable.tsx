@@ -9,7 +9,7 @@ const comparisons = [
   {
     diferencial: "Custo Mensal Real",
     interno: "R$ 6.000 a R$ 11.000 + encargos",
-    bpo: "A partir de R$ 1.890 p/ mês",
+    bpo: "A partir de R$ 4000 p/ mês",
   },
   {
     diferencial: "Tecnologia e Auditoria",
